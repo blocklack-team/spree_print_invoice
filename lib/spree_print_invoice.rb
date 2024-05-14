@@ -5,7 +5,7 @@ require 'prawn-rails'
 require 'spree_print_invoice/prawn_rails_configuration'
 require 'spree_extension'
 
-module PrintInvoice
+module SpreePrintInvoice
   def self.setup
     yield Config
   end

@@ -7,7 +7,7 @@ module SpreePrintInvoice
     config.autoload_paths += %W(#{config.root}/lib)
 
     initializer 'spree.print_invoice.preferences', before: :load_config_initializers do
-      PrintInvoice::Config = Spree::PrintInvoiceSetting.new
+      SpreePrintInvoice::Config = SpreePrintInvoice::Configuration.new
     end
 
     # use rspec for tests
