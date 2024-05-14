@@ -6,15 +6,20 @@ module Spree
       helper_method :order_focused?
 
       def show
-        respond_with(@bookkeeping_document) do |format|
+        @bookkeeping_document = Spree::BookkeepingDocument.find(params[:id])
+
+        respond_to do |format|
+          format.html
           format.pdf do
-            send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
+            pdf = generate_pdf(@bookkeeping_document)
+            send_data pdf.render, filename: "bookkeeping_document_#{@bookkeeping_document.id}.pdf",
+                                  type: 'application/pdf',
+                                  disposition: 'inline'
           end
         end
       end
 
       def index
-        # Massaging the params for the index view like Spree::Admin::Orders#index
         params[:q] ||= {}
         @search = Spree::BookkeepingDocument.ransack(params[:q])
         @bookkeeping_documents = @search.result
@@ -38,6 +43,15 @@ module Spree
 
       def load_order
         @order = Spree::Order.find_by(number: params[:order_id])
+      end
+
+      def generate_pdf(bookkeeping_document)
+        Prawn::Document.new do
+          text "Document ##{bookkeeping_document.id}", size: 30, style: :bold
+          move_down 20
+          text "Details: #{bookkeeping_document.details}"
+          # Agrega más contenido según sea necesario
+        end
       end
     end
   end
