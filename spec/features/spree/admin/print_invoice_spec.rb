@@ -13,7 +13,7 @@ RSpec.feature 'Admin print invoice feature' do
 
   context 'with Config.store_pdf set to true' do
     before do
-      allow(Spree::PrintInvoice::Config).to receive(:store_pdf).and_return(true)
+      allow(SpreePrintInvoice::Config).to receive(:store_pdf).and_return(true)
     end
 
     context 'with pdf file already present' do
@@ -31,8 +31,8 @@ RSpec.feature 'Admin print invoice feature' do
 
     context 'with pdf file not yet present' do
       before do
-        allow(Spree::PrintInvoice::Config).to receive(:storage_path).and_return('tmp/order_prints')
-        allow(Spree::PrintInvoice::Config).to receive(:next_number).and_return(100)
+        allow(SpreePrintInvoice::Config).to receive(:storage_path).and_return('tmp/order_prints')
+        allow(SpreePrintInvoice::Config).to receive(:next_number).and_return(100)
       end
 
       scenario 'sends the stored file.' do
@@ -48,7 +48,7 @@ RSpec.feature 'Admin print invoice feature' do
 
   context 'with Config.store_pdf set to false' do
     before do
-      allow(Spree::PrintInvoice::Config).to receive(:store_pdf).and_return(false)
+      allow(SpreePrintInvoice::Config).to receive(:store_pdf).and_return(false)
     end
 
     scenario 'sends rendered pdf.' do

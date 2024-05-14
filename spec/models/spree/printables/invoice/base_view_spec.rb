@@ -70,18 +70,18 @@ RSpec.describe Spree::Printables::Invoice::BaseView do
   describe '#number' do
     context 'when using sequential numbers' do
       before do
-        allow(Spree::PrintInvoice::Config).to receive(:use_sequential_number?) { true }
+        allow(SpreePrintInvoice::Config).to receive(:use_sequential_number?) { true }
       end
 
-      it 'calls next_number on Spree::PrintInvoice::Config' do
-        expect(Spree::PrintInvoice::Config).to receive(:next_number)
+      it 'calls next_number on SpreePrintInvoice::Config' do
+        expect(SpreePrintInvoice::Config).to receive(:next_number)
         base_view.number
       end
     end
 
     context 'when not using sequential numbers' do
       before do
-        allow(Spree::PrintInvoice::Config).to receive(:use_sequential_number?) { false }
+        allow(SpreePrintInvoice::Config).to receive(:use_sequential_number?) { false }
       end
 
       it 'calls the printables number' do

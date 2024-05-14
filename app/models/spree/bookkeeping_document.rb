@@ -57,10 +57,10 @@ module Spree
     #
     # You can disable the pdf file generation with setting
     #
-    #   Spree::PrintInvoice::Config.store_pdf to false
+    #   SpreePrintInvoice::Config.store_pdf to false
     #
     def pdf
-      if Spree::PrintInvoice::Config.store_pdf
+      if SpreePrintInvoice::Config.store_pdf
         send_or_create_pdf
       else
         render_pdf
@@ -81,10 +81,10 @@ module Spree
 
     # = PDF storage folder path for given template name
     #
-    # Configure the storage path with +Spree::PrintInvoice::Config.storage_path+
+    # Configure the storage path with +SpreePrintInvoice::Config.storage_path+
     #
     # Each template type gets it own pluralized folder inside
-    # of +Spree::PrintInvoice::Config.storage_path+
+    # of +SpreePrintInvoice::Config.storage_path+
     #
     # == Example:
     #
@@ -93,7 +93,7 @@ module Spree
     # Creates the folder if it's not present yet.
     #
     def storage_path
-      storage_path = Rails.root.join(Spree::PrintInvoice::Config.storage_path, template.pluralize)
+      storage_path = Rails.root.join(SpreePrintInvoice::Config.storage_path, template.pluralize)
       FileUtils.mkdir_p(storage_path)
       storage_path
     end

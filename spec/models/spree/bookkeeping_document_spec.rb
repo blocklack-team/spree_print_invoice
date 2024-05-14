@@ -33,7 +33,7 @@ RSpec.describe Spree::BookkeepingDocument do
     subject { Spree::BookkeepingDocument.create(printable: printable, template: 'invoice') }
 
     before do
-      allow(Spree::PrintInvoice::Config).to receive(:store_pdf) { false }
+      allow(SpreePrintInvoice::Config).to receive(:store_pdf) { false }
     end
 
     context 'with an order' do
@@ -57,7 +57,7 @@ RSpec.describe Spree::BookkeepingDocument do
     let(:pdf) { Spree::BookkeepingDocument.new(printable: printable, template: 'invoice') }
 
     before do
-      Spree::PrintInvoice::Config.set(next_number: 1)
+      SpreePrintInvoice::Config.set(next_number: 1)
       allow(pdf).to receive(:created_at) { Date.today }
     end
 
@@ -68,12 +68,12 @@ RSpec.describe Spree::BookkeepingDocument do
     end
 
     it 'sets a new invoice number when saving' do
-      expect(Spree::PrintInvoice::Config).to receive(:increase_invoice_number!)
+      expect(SpreePrintInvoice::Config).to receive(:increase_invoice_number!)
       pdf.save
     end
 
     it 'does not assign a new number when the save fails' do
-      expect(Spree::PrintInvoice::Config).not_to receive(:increase_invoice_number!)
+      expect(SpreePrintInvoice::Config).not_to receive(:increase_invoice_number!)
 
       expect do
         pdf.printable = nil # make it invalid
