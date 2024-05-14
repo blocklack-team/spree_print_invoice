@@ -1,7 +1,6 @@
 Rails.application.config.after_initialize do
   Rails.application.config.spree_backend.main_menu.add(
     Spree::Admin::MainMenu::SectionBuilder.new('documents', 'file.svg').
-      with_label(Spree.t(:documents, scope: [:print_invoice])).
       with_admin_ability_check(Spree::Order).
       with_items(
         Spree::Admin::MainMenu::ItemBuilder.new('invoices', Spree::Core::Engine.routes.url_helpers.admin_bookkeeping_documents_path(q: { template_eq: 'invoice' })).build,
@@ -10,3 +9,4 @@ Rails.application.config.after_initialize do
       build
   )
 end
+
