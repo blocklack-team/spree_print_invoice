@@ -1,3 +1,8 @@
 <ul class="nav nav-sidebar border-bottom">
-  <%= main_menu_tree Spree.t(:documents, scope: [:print_invoice]), url: '#sidebar-documents', icon: 'file.svg', sub_menu: 'documents_sub_menu' %>
+  <li class="nav-item">
+    <a class="nav-link" href="#sidebar-documents">
+      <%= Spree.t(:documents, scope: [:print_invoice]) %>
+      <img src="file.svg" alt="Icono de archivo">
+    </a>
+  </li>
 </ul>
