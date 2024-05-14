@@ -1,0 +1,45 @@
+---
+es:
+  spree:
+    print_invoice:
+      documents: Documentos
+      buttons:
+        invoice: Imprimir Factura
+        packaging_slip: Imprimir Recibo para el Embalaje
+      order_invoice: Factura
+      order_packaging_slip: Recibo para el Embalaje
+      reimbursement_invoice: Factura para devolución
+      invoice: Factura del cliente
+      item_name: Nombre de elemento o SKU
+      of: de
+      via: vía
+      on_date: Fecha del pedido
+      packaging_slip: Recibo para el Embalaje
+      page: Página
+      payment_via: "%{gateway} El pago en línea #%{number} en %{date}"
+      preferences:
+        next_number: Imprimir factura siguiente número
+        use_footer: Utilice el pie de página
+        use_page_numbers: Usar números de página
+        anomaly_message: Mensaje de anomalía del pedido
+        footer_left: Contenido del pie izquierdo
+        footer_left_info: Por ejemplo Nombre de su empresa y la dirección.
+        footer_right: Contenido del pie derecho
+        footer_right_info: Por ejemplo Su teléfono y correo electrónico.
+        page_layout: Diseño de página
+        page_size: Tamaño de página
+        print_buttons: Botones de imprimir
+        print_buttons_info: Lista separada por comas.
+        logo_path: Logo ruta imprimir factura
+        return_message: Mensaje de vuelta del pedido
+        font_face: Tipo de letra
+        font_size: Tamaño de letra
+        store_pdf: Store PDF files
+        storage_path: PDF storage path
+      settings: Configuración de impresión de facturas
+      unprocessed: No procesado
+      vat: IVA no aplicable
+      pdf_legend: PDF
+      invoice_slip_legend: Factura / Deslizamiento
+      invoice_number: 'Número de factura: %{number}'
+      invoice_date: 'Fecha de la factura: %{date}'
