@@ -11,8 +11,8 @@ module Spree
         respond_to do |format|
           format.html
           format.pdf do
-            pdf = generate_pdf(@bookkeeping_document)
-            send_data pdf.render, filename: "bookkeeping_document_#{@bookkeeping_document.id}.pdf",
+            #send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
+            send_data filename: "bookkeeping_document_#{@bookkeeping_document.id}.pdf",
                                   type: 'application/pdf',
                                   disposition: 'inline'
           end
