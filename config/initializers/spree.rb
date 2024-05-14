@@ -1,10 +1,12 @@
-Spree::Backend::Config.configure do |config|
-	config.menu_items << config.class::MenuItem.new(
-		[:documents],          # Icono del menú (debe ser un símbolo)
-		'#sidebar-documents',  # Ruta que actúa como ancla para el submenú
-		label: Spree.t(:documents, scope: [:print_invoice]), # Texto que aparecerá en el menú
-		condition: -> { can?(:admin, Spree::Order) }, # Condición para mostrar el ítem
-		icon: 'file.svg',      # Icono para el menú (debe estar en la carpeta de iconos)
-		sub_menu: 'documents_sub_menu'
-	)
+Rails.application.config.after_initialize do
+  Rails.application.config.spree_backend.main_menu.add(
+    Spree::Admin::MainMenu::SectionBuilder.new('documents', 'file.svg').
+      with_label(Spree.t(:documents, scope: [:print_invoice])).
+      with_admin_ability_check(Spree::Order).
+      with_items(
+        Spree::Admin::MainMenu::ItemBuilder.new('invoices', Spree::Core::Engine.routes.url_helpers.admin_bookkeeping_documents_path(q: { template_eq: 'invoice' })).build,
+        Spree::Admin::MainMenu::ItemBuilder.new('packaging_slips', Spree::Core::Engine.routes.url_helpers.admin_bookkeeping_documents_path(q: { template_eq: 'packaging_slip' })).build
+      ).
+      build
+  )
 end
