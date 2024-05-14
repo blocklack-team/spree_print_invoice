@@ -14,7 +14,7 @@ RSpec.describe Spree::Admin::BookkeepingDocumentsController, type: :controller d
 
       context 'with a valid image as logo' do
         before do
-          SpreePrintInvoice::Config.set_preference(:logo_path, 'logo/spree_50.png')
+          Spree::PrintInvoice::Config.set_preference(:logo_path, 'logo/spree_50.png')
         end
 
         it 'renders pdf' do
@@ -25,7 +25,7 @@ RSpec.describe Spree::Admin::BookkeepingDocumentsController, type: :controller d
 
       context 'with an invalid path as logo' do
         before do
-          SpreePrintInvoice::Config.set_preference(:logo_path, 'this/is/not_an_exisiting_image.png')
+          Spree::PrintInvoice::Config.set_preference(:logo_path, 'this/is/not_an_exisiting_image.png')
         end
 
         it 'renders pdf' do

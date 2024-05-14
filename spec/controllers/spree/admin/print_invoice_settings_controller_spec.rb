@@ -27,7 +27,7 @@ RSpec.describe Spree::Admin::PrintInvoiceSettingsController, type: :controller d
             logo_scale: 80
             font_face: Arial
             font_size: 12' do
-      subject { SpreePrintInvoice::Config }
+      subject { Spree::PrintInvoice::Config }
 
       it 'sets preferred_next_number to 1' do
         put :update, params: { preferences: { next_number: 1 } }
