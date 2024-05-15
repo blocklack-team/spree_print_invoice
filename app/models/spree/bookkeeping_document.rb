@@ -152,8 +152,8 @@ module Spree
       
         # address block on first page only
         if pdf.page_number == 1
-          bill_address = bill_address
-          ship_address = ship_address
+          bill_address = printable.bill_address
+          ship_address = printable.ship_address
           
           pdf.move_down 2
           address_cell_billing  = pdf.make_cell(content: Spree.t(:billing_address), font_style: :bold)
@@ -172,7 +172,7 @@ module Spree
           shipping << "\n#{ship_address.city}, #{ship_address.state_text} #{ship_address.zipcode}"
           shipping << "\n#{ship_address.country.name}"
           shipping << "\n#{ship_address.phone}"
-          shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{shipping_methods.join(", ")}"
+          shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{printable.shipping_methods.join(", ")}"
           
           data = [[address_cell_billing, address_cell_shipping], [billing, shipping]]
           
