@@ -1,3 +1,1 @@
-# app/views/spree/printables/order/invoice.pdf.prawn
-pdf.text "Hello, PDF!"
-
+render 'spree/printables/shared/invoice/base', doc: @doc
