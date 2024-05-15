@@ -111,6 +111,13 @@ module Spree
     # Assigns +@doc+ instance variable
     #
     def render_pdf
+      self.invoice_template
+      #ActionController::Base.new.render_to_string(template: "#{template_name}.pdf.prawn", layout: false, assigns: { doc: self })
+    end
+
+    private
+
+    def invoice_template
       doc = self
 
       font_style = {
@@ -124,7 +131,20 @@ module Spree
       pdf.font font_style[:face], size: font_style[:size]
       
       pdf.repeat(:all) do
-        render 'spree/printables/shared/header', pdf: pdf, printable: doc
+        im = (Rails.application.assets || ::Sprockets::Railtie.build_environment(Rails.application)).find_asset(Spree::PrintInvoice::Config[:logo_path])
+
+        if im && File.exist?(im.pathname)
+          pdf.image im.filename, vposition: :top, height: 40, scale: Spree::PrintInvoice::Config[:logo_scale]
+        end
+        
+        pdf.grid([0,3], [1,4]).bounding_box do
+          pdf.text Spree.t(printable.document_type, scope: :print_invoice), align: :right, style: :bold, size: 18
+          pdf.move_down 4
+        
+          pdf.text Spree.t(:invoice_number, scope: :print_invoice, number: printable.number), align: :right
+          pdf.move_down 2
+          pdf.text Spree.t(:invoice_date, scope: :print_invoice, date: I18n.l(printable.date)), align: :right
+        end
       end
       
       # CONTENT
@@ -132,16 +152,107 @@ module Spree
       
         # address block on first page only
         if pdf.page_number == 1
-          render 'spree/printables/shared/address_block', pdf: pdf, printable: doc
+          bill_address = printable.bill_address
+          ship_address = printable.ship_address
+          
+          pdf.move_down 2
+          address_cell_billing  = pdf.make_cell(content: Spree.t(:billing_address), font_style: :bold)
+          address_cell_shipping = pdf.make_cell(content: Spree.t(:shipping_address), font_style: :bold)
+          
+          billing =  "#{bill_address.firstname} #{bill_address.lastname}"
+          billing << "\n#{bill_address.address1}"
+          billing << "\n#{bill_address.address2}" unless bill_address.address2.blank?
+          billing << "\n#{bill_address.city}, #{bill_address.state_text} #{bill_address.zipcode}"
+          billing << "\n#{bill_address.country.name}"
+          billing << "\n#{bill_address.phone}"
+          
+          shipping =  "#{ship_address.firstname} #{ship_address.lastname}"
+          shipping << "\n#{ship_address.address1}"
+          shipping << "\n#{ship_address.address2}" unless ship_address.address2.blank?
+          shipping << "\n#{ship_address.city}, #{ship_address.state_text} #{ship_address.zipcode}"
+          shipping << "\n#{ship_address.country.name}"
+          shipping << "\n#{ship_address.phone}"
+          shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{printable.shipping_methods.join(", ")}"
+          
+          data = [[address_cell_billing, address_cell_shipping], [billing, shipping]]
+          
+          pdf.table(data, position: :center, column_widths: [pdf.bounds.width / 2, pdf.bounds.width / 2])
         end
       
         pdf.move_down 10
       
-        #render 'spree/printables/shared/invoice/items', pdf: pdf, invoice: doc
+        header = [
+          pdf.make_cell(content: Spree.t(:sku)),
+          pdf.make_cell(content: Spree.t(:item_description)),
+          pdf.make_cell(content: Spree.t(:options)),
+          pdf.make_cell(content: Spree.t(:price)),
+          pdf.make_cell(content: Spree.t(:qty)),
+          pdf.make_cell(content: Spree.t(:total))
+        ]
+        data = [header]
+        
+        invoice.items.each do |item|
+          row = [
+            item.sku,
+            item.name,
+            item.options_text,
+            item.display_price.to_s,
+            item.quantity,
+            item.display_total.to_s
+          ]
+          data += [row]
+        end
+        
+        column_widths = [0.13, 0.37, 0.185, 0.12, 0.075, 0.12].map { |w| w * pdf.bounds.width }
+        
+        pdf.table(data, header: true, position: :center, column_widths: column_widths) do
+          row(0).style align: :center, font_style: :bold
+          column(0..2).style align: :left
+          column(3..6).style align: :right
+        end
       
         pdf.move_down 10
       
-        #render 'spree/printables/shared/totals', pdf: pdf, invoice: doc
+        # TOTALS
+        totals = []
+
+        # Subtotal
+        totals << [pdf.make_cell(content: Spree.t(:subtotal)), invoice.display_item_total.to_s]
+
+        # Adjustments
+        invoice.adjustments.each do |adjustment|
+          totals << [pdf.make_cell(content: adjustment.label), adjustment.display_amount.to_s]
+        end
+
+        # Shipments
+        invoice.shipments.each do |shipment|
+          totals << [pdf.make_cell(content: shipment.shipping_method.name), shipment.display_cost.to_s]
+        end
+
+        # Totals
+        totals << [pdf.make_cell(content: Spree.t(:order_total)), invoice.display_total.to_s]
+
+        # Payments
+        total_payments = 0.0
+        invoice.payments.completed.each do |payment|
+          totals << [
+            pdf.make_cell(
+              content: Spree.t(:payment_via,
+              gateway: (payment.source_type || Spree.t(:unprocessed, scope: :print_invoice)),
+              number: payment.number,
+              date: I18n.l(payment.updated_at.to_date, format: :long),
+              scope: :print_invoice)
+            ),
+            payment.display_amount.to_s
+          ]
+          total_payments += payment.amount
+        end
+
+        totals_table_width = [0.875, 0.125].map { |w| w * pdf.bounds.width }
+        pdf.table(totals, column_widths: totals_table_width) do
+          row(0..6).style align: :right
+          column(0).style borders: [], font_style: :bold
+        end
       
         pdf.move_down 30
       
@@ -150,20 +261,39 @@ module Spree
       
       # Footer
       if Spree::PrintInvoice::Config[:use_footer]
-        #render 'spree/printables/shared/footer', pdf: pdf
+        pdf.repeat(:all) do
+          pdf.grid([7,0], [7,4]).bounding_box do
+        
+            data  = []
+            data << [pdf.make_cell(content: Spree.t(:vat, scope: :print_invoice), colspan: 2, align: :center)]
+            data << [pdf.make_cell(content: '', colspan: 2)]
+            data << [pdf.make_cell(content: Spree::PrintInvoice::Config[:footer_left],  align: :left),
+            pdf.make_cell(content: Spree::PrintInvoice::Config[:footer_right], align: :right)]
+        
+            pdf.table(data, position: :center, column_widths: [pdf.bounds.width / 2, pdf.bounds.width / 2]) do
+              row(0..2).style borders: []
+            end
+          end
+        end
       end
       
       # Page Number
       if Spree::PrintInvoice::Config[:use_page_numbers]
-        #render 'spree/printables/shared/page_number', pdf: pdf
+        string  = "#{Spree.t(:page, scope: :print_invoice)} <page> #{Spree.t(:of, scope: :print_invoice)} <total>"
+
+        options = {
+          at: [pdf.bounds.right - 155, 0],
+          width: 150,
+          align: :right,
+          start_count_at: 1,
+          color: '000000'
+        }
+        
+        pdf.number_pages string, options
       end
       
       pdf.render
-
-      #ActionController::Base.new.render_to_string(template: "#{template_name}.pdf.prawn", layout: false, assigns: { doc: self })
     end
-
-    private
 
     def copy_view_attributes
       PERSISTED_ATTRS.each do |attr|
