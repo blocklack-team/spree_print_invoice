@@ -113,9 +113,7 @@ module Spree
     def render_pdf
       if template == 'invoice'
         self.invoice_template
-      end
-
-      if template == 'packaging_slip'
+      elsif template == 'packaging_slip'
         self.packaging_slip_template
       end
       #ActionController::Base.new.render_to_string(template: "#{template_name}.pdf.prawn", layout: false, assigns: { doc: self })
