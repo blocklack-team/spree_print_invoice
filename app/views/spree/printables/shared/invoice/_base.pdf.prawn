@@ -43,3 +43,4 @@ if Spree::PrintInvoice::Config[:use_page_numbers]
   render 'spree/printables/shared/page_number', pdf: pdf
 end
 
+pdf.render

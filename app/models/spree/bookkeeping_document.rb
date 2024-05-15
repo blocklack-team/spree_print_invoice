@@ -113,6 +113,7 @@ module Spree
     def render_pdf
       pdf = Prawn::Document.new
       pdf.text "Hello, PDF!"
+      pdf.text "#{template_name}.pdf.prawn"
       pdf.render
 
       #ApplicationController.render(
