@@ -13,9 +13,12 @@ Rails.application.config.after_initialize do
   )
 
   Rails.application.config.spree_backend.tabs[:order].add(
-    Spree::Admin::Tabs::TabBuilder.new(Spree.t(:documents, scope: [:print_invoice]), ->(resource) { admin_order_bookkeeping_documents_path(order) }).
-      with_icon_key('file.svg').
-      with_active_check.
-      build
+    Spree::Admin::Tabs::TabBuilder.new(
+      Spree.t(:documents, scope: [:print_invoice]), 
+      ->(order) { Spree::Core::Engine.routes.url_helpers.admin_order_bookkeeping_documents_path(order) }
+    ).
+    with_icon_key('file.svg').
+    with_active_check.
+    build
   )
 end
