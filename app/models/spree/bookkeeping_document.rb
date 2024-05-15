@@ -116,7 +116,7 @@ module Spree
       #pdf.text "#{template_name}.pdf.prawn"
       #pdf.render
 
-      render_to_string(template: "#{template_name}.pdf.prawn", layout: false, assigns: { doc: self })
+      ActionController::Base.new.render_to_string(template: "#{template_name}.pdf.prawn", layout: false, assigns: { doc: self })
     end
 
     private
