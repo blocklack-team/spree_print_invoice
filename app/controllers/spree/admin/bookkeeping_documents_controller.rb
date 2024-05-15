@@ -6,6 +6,9 @@ module Spree
       helper_method :order_focused?
 
       def show
+        p '@bookkeeping_document'
+        p @bookkeeping_document
+        p '@bookkeeping_document'
         respond_with(@bookkeeping_document) do |format|
           format.pdf do
             send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
@@ -38,6 +41,8 @@ module Spree
 
       def load_order
         @order = Spree::Order.find_by(number: params[:order_id])
+        p '@order'
+        p @order
       end
     end
   end
