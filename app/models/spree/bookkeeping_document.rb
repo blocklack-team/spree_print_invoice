@@ -111,11 +111,11 @@ module Spree
     # Assigns +@doc+ instance variable
     #
     def render_pdf
-      if document_type == 'invoice'
+      if template == 'invoice'
         self.invoice_template
       end
 
-      if document_type == 'packaging_slip'
+      if template == 'packaging_slip'
         self.packaging_slip_template
       end
       #ActionController::Base.new.render_to_string(template: "#{template_name}.pdf.prawn", layout: false, assigns: { doc: self })
