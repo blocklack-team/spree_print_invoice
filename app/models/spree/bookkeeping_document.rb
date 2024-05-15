@@ -119,6 +119,8 @@ module Spree
 
     def invoice_template
       doc = self
+      printable = doc
+      invoice = doc
 
       font_style = {
         face: Spree::PrintInvoice::Config[:font_face],
@@ -138,12 +140,12 @@ module Spree
         end
         
         pdf.grid([0,3], [1,4]).bounding_box do
-          pdf.text Spree.t(document_type, scope: :print_invoice), align: :right, style: :bold, size: 18
+          pdf.text Spree.t(printable.document_type, scope: :print_invoice), align: :right, style: :bold, size: 18
           pdf.move_down 4
         
-          pdf.text Spree.t(:invoice_number, scope: :print_invoice, number: number), align: :right
+          pdf.text Spree.t(:invoice_number, scope: :print_invoice, number: printable.number), align: :right
           pdf.move_down 2
-          pdf.text Spree.t(:invoice_date, scope: :print_invoice, date: I18n.l(date)), align: :right
+          pdf.text Spree.t(:invoice_date, scope: :print_invoice, date: I18n.l(printable.date)), align: :right
         end
       end
       
@@ -172,7 +174,7 @@ module Spree
           shipping << "\n#{ship_address.city}, #{ship_address.state_text} #{ship_address.zipcode}"
           shipping << "\n#{ship_address.country.name}"
           shipping << "\n#{ship_address.phone}"
-          #shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{printable.shipping_methods.join(", ")}"
+          shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{printable.shipping_methods.join(", ")}"
           
           data = [[address_cell_billing, address_cell_shipping], [billing, shipping]]
           
