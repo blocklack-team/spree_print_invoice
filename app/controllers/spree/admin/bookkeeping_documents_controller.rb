@@ -3,13 +3,10 @@ module Spree
     class BookkeepingDocumentsController < ResourceController
       before_action :load_order, if: :order_focused?
 
-      before_action :load_bookkeeping_document, only: [:show]
-
       helper_method :order_focused?
 
       def show
-        respond_to do |format|
-          format.html
+        respond_with(@bookkeeping_document) do |format|
           format.pdf do
             send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
           end
@@ -41,10 +38,6 @@ module Spree
 
       def load_order
         @order = Spree::Order.find_by(number: params[:order_id])
-      end
-
-      def load_bookkeeping_document
-        @bookkeeping_document = @order.bookkeeping_documents.find(params[:id])
       end
     end
   end
