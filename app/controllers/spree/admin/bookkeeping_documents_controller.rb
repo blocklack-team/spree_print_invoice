@@ -17,7 +17,7 @@ module Spree
         respond_to do |format|
           format.html
           format.pdf do
-            render pdf: "invoice", template: "spree/printables/order/invoice.pdf.prawn", disposition: 'inline'
+            render pdf: "invoice", template: "views/spree/printables/order/invoice.pdf.prawn", disposition: 'inline'
           end
         end
       end
