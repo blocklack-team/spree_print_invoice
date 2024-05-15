@@ -5,10 +5,24 @@ module Spree
 
       helper_method :order_focused?
 
+      #def show
+      #  respond_with(@bookkeeping_document) do |format|
+      #    format.pdf do
+      #      send_data @bookkeeping_document, type: 'application/pdf', disposition: 'inline'
+      #    end
+      #  end
+      #end
+
       def show
-        respond_with(@bookkeeping_document) do |format|
+        respond_to do |format|
           format.pdf do
-            send_data @bookkeeping_document, type: 'application/pdf', disposition: 'inline'
+            pdf = Prawn::Document.new
+            # Aquí agregarías el contenido de tu PDF utilizando Prawn
+            pdf.text "Hello, PDF!"
+            pdf.text "Order ID: #{@bookkeeping_document.number}"
+            pdf.text "Document ID: #{@bookkeeping_document.id}"
+            
+            send_data pdf.render, filename: "document.pdf", type: "application/pdf", disposition: "inline"
           end
         end
       end
