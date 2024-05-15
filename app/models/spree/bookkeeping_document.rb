@@ -37,7 +37,7 @@ module Spree
     end
 
     def template_name
-      "spree/printables/#{single_lower_case_name(printable.class.name)}/#{template}"
+      "views/spree/printables/#{single_lower_case_name(printable.class.name)}/#{template}"
     end
 
     # If the document is called from the view with some method it doesn't know,
@@ -111,15 +111,15 @@ module Spree
     # Assigns +@doc+ instance variable
     #
     def render_pdf
-      pdf = Prawn::Document.new
-      pdf.text "Hello, PDF!"
-      pdf.text "#{template_name}.pdf.prawn"
-      pdf.render
+      #pdf = Prawn::Document.new
+      #pdf.text "Hello, PDF!"
+      #pdf.text "#{template_name}.pdf.prawn"
+      #pdf.render
 
-      #ApplicationController.render(
-      #  template: "#{template_name}.pdf.prawn",
-      #  assigns: { doc: self }
-      #)
+      ApplicationController.render(
+        template: "#{template_name}.pdf.prawn",
+        assigns: { doc: self }
+      )
     end
 
     private
