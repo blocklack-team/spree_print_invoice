@@ -5,20 +5,13 @@ module Spree
 
       helper_method :order_focused?
 
-      #def show
-      #  respond_with(@bookkeeping_document) do |format|
-      #    format.pdf do
-      #      send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
-      #    end
-      #  end
-      #end
-
       def show
-        respond_to do |format|
-          format.html
+        p '@bookkeeping_document'
+        p @bookkeeping_document
+        p '@bookkeeping_document'
+        respond_with(@bookkeeping_document) do |format|
           format.pdf do
-            pdf = generate_pdf(@bookkeeping_document)
-            send_data pdf.render, filename: "document.pdf", type: "application/pdf", disposition: 'inline'
+            send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
           end
         end
       end
@@ -48,17 +41,6 @@ module Spree
 
       def load_order
         @order = Spree::Order.find_by(number: params[:order_id])
-      end
-
-      def generate_pdf(bookkeeping_document)
-        Prawn::Document.new do
-          text "Hello, PDF!"
-          text "Order ID: #{bookkeeping_document.number}"
-          text "Document ID: #{bookkeeping_document.id}"
-          text "Email: #{bookkeeping_document.email}"
-          text "Name: #{bookkeeping_document.firstname}"
-          # Añade más contenido aquí
-        end
       end
     end
   end
