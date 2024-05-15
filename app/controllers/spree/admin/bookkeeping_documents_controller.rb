@@ -20,6 +20,11 @@ module Spree
             # Aquí agregarías el contenido de tu PDF utilizando Prawn
             pdf.text "Hello, PDF!"
 
+            font_style = {
+              face: Spree::PrintInvoice::Config[:font_face],
+              size: Spree::PrintInvoice::Config[:font_size]
+            }
+
             pdf.font_families.update(Spree::PrintInvoiceSetting.additional_fonts)
             pdf.define_grid(columns: 5, rows: 8, gutter: 10)
             pdf.font font_style[:face], size: font_style[:size]
@@ -33,7 +38,7 @@ module Spree
           
               # address block on first page only
               if pdf.page_number == 1
-                #render 'spree/printables/shared/address_block', pdf: pdf, printable: doc
+                render 'spree/printables/shared/address_block', pdf: pdf, printable: doc
               end
           
               pdf.move_down 10
