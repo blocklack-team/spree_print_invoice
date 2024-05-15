@@ -111,10 +111,13 @@ module Spree
     # Assigns +@doc+ instance variable
     #
     def render_pdf
-      ApplicationController.render(
-        template: "#{template_name}.pdf.prawn",
-        assigns: { doc: self }
-      )
+      pdf = Prawn::Document.new
+      pdf.text "Hello, PDF!"
+
+      #ApplicationController.render(
+      #  template: "#{template_name}.pdf.prawn",
+      #  assigns: { doc: self }
+      #)
     end
 
     private
