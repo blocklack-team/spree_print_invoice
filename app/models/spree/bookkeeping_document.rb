@@ -37,7 +37,7 @@ module Spree
     end
 
     def template_name
-      "views/spree/printables/#{single_lower_case_name(printable.class.name)}/#{template}"
+      "spree/printables/#{single_lower_case_name(printable.class.name)}/#{template}"
     end
 
     # If the document is called from the view with some method it doesn't know,
