@@ -124,7 +124,7 @@ module Spree
       pdf.font font_style[:face], size: font_style[:size]
       
       pdf.repeat(:all) do
-        #render 'spree/printables/shared/header', pdf: pdf, printable: doc
+        render 'spree/printables/shared/header', pdf: pdf, printable: doc
       end
       
       # CONTENT
@@ -132,7 +132,7 @@ module Spree
       
         # address block on first page only
         if pdf.page_number == 1
-          #render 'spree/printables/shared/address_block', pdf: pdf, printable: doc
+          render 'spree/printables/shared/address_block', pdf: pdf, printable: doc
         end
       
         pdf.move_down 10
