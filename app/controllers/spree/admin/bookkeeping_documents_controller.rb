@@ -11,7 +11,7 @@ module Spree
         p '@bookkeeping_document'
         respond_with(@bookkeeping_document) do |format|
           format.pdf do
-            send_data @bookkeeping_document.pdf, type: 'application/pdf', disposition: 'inline'
+            send_data @bookkeeping_document, type: 'application/pdf', disposition: 'inline'
           end
         end
       end
