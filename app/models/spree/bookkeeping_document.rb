@@ -111,7 +111,7 @@ module Spree
     # Assigns +@doc+ instance variable
     #
     def render_pdf
-      template = Prawn::Document::Template.new("#{template_name}.pdf.prawn")
+      template = Prawn::Template.new("#{template_name}.pdf.prawn")
       pdf = Prawn::Document.new
       pdf.template template
       #pdf.text "Hello, PDF!"
