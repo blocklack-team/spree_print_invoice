@@ -5,13 +5,19 @@ module Spree
 
       helper_method :order_focused?
 
+      #def show
+      #  respond_with(@bookkeeping_document) do |format|
+      #    format.pdf do
+      #      send_data @bookkeeping_document, type: 'application/pdf', disposition: 'inline'
+      #    end
+      #  end
+      #end
+
       def show
-        p '@bookkeeping_document'
-        p @bookkeeping_document
-        p '@bookkeeping_document'
-        respond_with(@bookkeeping_document) do |format|
+        respond_to do |format|
+          format.html
           format.pdf do
-            send_data @bookkeeping_document, type: 'application/pdf', disposition: 'inline'
+            render pdf: "invoice", template: "spree/printables/order/invoice.pdf.prawn", disposition: 'inline'
           end
         end
       end
