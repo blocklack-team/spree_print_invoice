@@ -111,7 +111,7 @@ module Spree
     # Assigns +@doc+ instance variable
     #
     def render_pdf
-      doc: self
+      doc = self
 
       font_style = {
         face: Spree::PrintInvoice::Config[:font_face],
