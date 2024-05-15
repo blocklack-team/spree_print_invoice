@@ -116,10 +116,7 @@ module Spree
       #pdf.text "#{template_name}.pdf.prawn"
       #pdf.render
 
-      ApplicationController.render(
-        template: "#{template_name}.pdf.prawn",
-        assigns: { doc: self }
-      )
+      render_to_string(template: "#{template_name}.pdf.prawn", layout: false, assigns: { doc: self })
     end
 
     private
