@@ -8,4 +8,6 @@ gem 'rails-controller-testing'
 
 gemspec
 
-gem install prawn_plus
+gem 'prawn_plus'
+
+gem 'prawn-templates'
