@@ -53,8 +53,10 @@ module Spree
       def generate_pdf(bookkeeping_document)
         Prawn::Document.new do
           text "Hello, PDF!"
-          text "Order ID: #{bookkeeping_document.order.id}"
+          text "Order ID: #{bookkeeping_document.number}"
           text "Document ID: #{bookkeeping_document.id}"
+          text "Email: #{bookkeeping_document.email}"
+          text "Name: #{bookkeeping_document.firstname}"
           # Añade más contenido aquí
         end
       end
