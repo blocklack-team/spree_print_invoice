@@ -189,22 +189,20 @@ module Spree
         pdf.move_down 10
       
         header = [
-          pdf.make_cell(content: Spree.t(:sku)),
+          pdf.make_cell(content: Spree.t(:qty)),
           pdf.make_cell(content: Spree.t(:item_description)),
           pdf.make_cell(content: Spree.t(:options)),
           pdf.make_cell(content: Spree.t(:price)),
-          pdf.make_cell(content: Spree.t(:qty)),
           pdf.make_cell(content: Spree.t(:total))
         ]
         data = [header]
 
         invoice.items.each do |item|
           row = [
-            item.sku,
+            item.quantity,
             item.name,
             item.options_text,
             item.display_price.to_s,
-            item.quantity,
             item.display_total.to_s
           ]
     
@@ -387,18 +385,18 @@ module Spree
     
         header =  [
           pdf.make_cell(content: Spree.t(:sku)),
+          pdf.make_cell(content: Spree.t(:qty)),
           pdf.make_cell(content: Spree.t(:item_description)),
-          pdf.make_cell(content: Spree.t(:options)),
-          pdf.make_cell(content: Spree.t(:qty))
+          pdf.make_cell(content: Spree.t(:options))
         ]
         data = [header]
 
         printable.items.each do |item|
           row = [
             item.sku,
+            item.quantity,
             item.name,
-            item.options_text,
-            item.quantity
+            item.options_text
           ]
     
           # Verificar si el item es parte de un bundle
