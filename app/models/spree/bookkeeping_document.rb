@@ -137,10 +137,11 @@ module Spree
       pdf.font font_style[:face], size: font_style[:size]
       
       pdf.repeat(:all) do
-        im = (Rails.application.assets || ::Sprockets::Railtie.build_environment(Rails.application)).find_asset(Spree::PrintInvoice::Config[:logo_path])
+        #im = (Rails.application.assets || ::Sprockets::Railtie.build_environment(Rails.application)).find_asset(Spree::PrintInvoice::Config[:logo_path])
+        logo_path = Rails.root.join('app', 'assets', 'images', Spree::PrintInvoice::Config[:logo_path])
 
-        if im && File.exist?(im.digest_path)
-          pdf.image im.filename, vposition: :top, height: 40, scale: Spree::PrintInvoice::Config[:logo_scale]
+        if File.exist?(logo_path)
+          pdf.image logo_path, vposition: :top, height: 40, scale: Spree::PrintInvoice::Config[:logo_scale]
         end
         
         pdf.grid([0,3], [1,4]).bounding_box do
@@ -317,10 +318,11 @@ module Spree
       pdf.font font_style[:face], size: font_style[:size]
     
       pdf.repeat(:all) do
-        im = (Rails.application.assets || ::Sprockets::Railtie.build_environment(Rails.application)).find_asset(Spree::PrintInvoice::Config[:logo_path])
+        #im = (Rails.application.assets || ::Sprockets::Railtie.build_environment(Rails.application)).find_asset(Spree::PrintInvoice::Config[:logo_path])
+        logo_path = Rails.root.join('app', 'assets', 'images', Spree::PrintInvoice::Config[:logo_path])
 
-        if im && File.exist?(im.digest_path)
-          pdf.image im.filename, vposition: :top, height: 40, scale: Spree::PrintInvoice::Config[:logo_scale]
+        if File.exist?(logo_path)
+          pdf.image logo_path, vposition: :top, height: 40, scale: Spree::PrintInvoice::Config[:logo_scale]
         end
         
         pdf.grid([0,3], [1,4]).bounding_box do
