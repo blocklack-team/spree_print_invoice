@@ -15,7 +15,7 @@ module Spree
         Spree::Printables::Invoice::Item.new(
           variant_id: item.variant.id,
           product_id: item.variant.product_id,
-          sku: item.variant.sku,
+          sku: item.variant.product.sku,
           name: item.variant.name,
           options_text: item.variant.options_text,
           price: item.price,

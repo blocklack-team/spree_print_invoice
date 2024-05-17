@@ -197,7 +197,7 @@ module Spree
           pdf.make_cell(content: Spree.t(:total))
         ]
         data = [header]
-        
+
         invoice.items.each do |item|
           row = [
             item.sku,
@@ -207,7 +207,21 @@ module Spree
             item.quantity,
             item.display_total.to_s
           ]
-          data += [row]
+    
+          # Verificar si el item es parte de un bundle
+          if item.parts.present?
+            item.parts.each do |part|
+              part_name = part.name
+              part_sku = "#{Spree.t(:sku)}: #{part.sku}"
+              bundle_info = Spree.t(:part_of_bundle, sku: item.sku)
+              bundle_options = item.options_text.present? ? " (#{item.options_text})" : ""
+              bundle_details = "#{bundle_info}#{bundle_options}"
+    
+              row[1] += " - #{part_name} #{part_sku} #{bundle_details}"
+            end
+          end
+    
+          data << row
         end
         
         column_widths = [0.13, 0.37, 0.185, 0.12, 0.075, 0.12].map { |w| w * pdf.bounds.width }
@@ -378,7 +392,7 @@ module Spree
           pdf.make_cell(content: Spree.t(:qty))
         ]
         data = [header]
-        
+
         printable.items.each do |item|
           row = [
             item.sku,
@@ -386,7 +400,21 @@ module Spree
             item.options_text,
             item.quantity
           ]
-          data += [row]
+    
+          # Verificar si el item es parte de un bundle
+          if item.parts.present?
+            item.parts.each do |part|
+              part_name = part.name
+              part_sku = "#{Spree.t(:sku)}: #{part.sku}"
+              bundle_info = Spree.t(:part_of_bundle, sku: item.sku)
+              bundle_options = item.options_text.present? ? " (#{item.options_text})" : ""
+              bundle_details = "#{bundle_info}#{bundle_options}"
+    
+              row[1] += " - #{part_name} #{part_sku} #{bundle_details}"
+            end
+          end
+    
+          data << row
         end
         
         column_widths = [0.125, 0.55, 0.25, 0.075].map { |w| w * pdf.bounds.width }
