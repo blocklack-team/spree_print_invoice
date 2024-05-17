@@ -212,12 +212,12 @@ module Spree
           if item.parts.present?
             item.parts.each do |part|
               part_name = part.name
-              part_sku = "#{Spree.t(:sku)}: #{part.sku}"
-              bundle_info = Spree.t(:part_of_bundle, sku: item.sku)
+              part_sku = "<b>#{Spree.t(:sku)}:</b> #{part.sku}"
+              bundle_info = "<b>#{Spree.t(:part_of_bundle, sku: item.sku)}</b>"
               bundle_options = item.options_text.present? ? " (#{item.options_text})" : ""
-              bundle_details = "#{bundle_info}#{bundle_options}"
+              bundle_details = "#{bundle_info}"
     
-              row[1] += " - #{part_name} #{part_sku} #{bundle_details}"
+              row[1] += "\n- #{part_name} #{part_sku} #{bundle_details}"
             end
           end
     
@@ -405,12 +405,12 @@ module Spree
           if item.parts.present?
             item.parts.each do |part|
               part_name = part.name
-              part_sku = "#{Spree.t(:sku)}: #{part.sku}"
-              bundle_info = Spree.t(:part_of_bundle, sku: item.sku)
+              part_sku = "<b>#{Spree.t(:sku)}:</b> #{part.sku}"
+              bundle_info = "<b>#{Spree.t(:part_of_bundle, sku: item.sku)}</b>"
               bundle_options = item.options_text.present? ? " (#{item.options_text})" : ""
-              bundle_details = "#{bundle_info}#{bundle_options}"
+              bundle_details = "#{bundle_info}"
     
-              row[1] += " - #{part_name} #{part_sku} #{bundle_details}"
+              row[1] += "\n- #{part_name} #{part_sku} #{bundle_details}"
             end
           end
     
