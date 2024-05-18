@@ -413,7 +413,7 @@ module Spree
           data << row
         end
         
-        column_widths = [0.125, 0.7, 0.455, 0.35].map { |w| w * pdf.bounds.width }
+        column_widths = [0.125, 0.075, 0.55, 0.25].map { |w| w * pdf.bounds.width }
         
         pdf.table(data, header: true, position: :center, column_widths: column_widths) do
           row(0).style align: :center, font_style: :bold
