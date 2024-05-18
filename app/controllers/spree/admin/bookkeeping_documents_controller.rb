@@ -24,6 +24,10 @@ module Spree
         if params[:q][:created_at_gt].blank?
           params[:q][:created_at_gt] = Time.current.beginning_of_day
         end
+
+        if params[:q][:template_eq].blank?
+          params[:q][:template_eq] = 'invoice'
+        end
       
         @search = Spree::BookkeepingDocument.ransack(params[:q])
         @bookkeeping_documents = @search.result
