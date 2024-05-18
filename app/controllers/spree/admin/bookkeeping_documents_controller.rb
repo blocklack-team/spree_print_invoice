@@ -14,12 +14,22 @@ module Spree
       end
 
       def index
-        # Massaging the params for the index view like Spree::Admin::Orders#index
+        # Inicializa los parámetros de búsqueda si no están definidos
         params[:q] ||= {}
+        
+        # Configura el orden predeterminado a 'created_at desc' si no se ha establecido
+        params[:q][:s] ||= 'created_at desc'
+        
+        # Configura el filtro predeterminado para la fecha de creación al día actual si no se ha establecido
+        if params[:q][:created_at_gteq].blank? && params[:q][:created_at_lteq].blank?
+          params[:q][:created_at_gteq] = Time.current.beginning_of_day
+          params[:q][:created_at_lteq] = Time.current.end_of_day
+        end
+      
         @search = Spree::BookkeepingDocument.ransack(params[:q])
         @bookkeeping_documents = @search.result
         @bookkeeping_documents = @bookkeeping_documents.where(printable: @order) if order_focused?
-        @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(10)
+        @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(50)
       end
 
       def refresh
