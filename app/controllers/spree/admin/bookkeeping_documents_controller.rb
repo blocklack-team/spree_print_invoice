@@ -21,9 +21,8 @@ module Spree
         params[:q][:s] ||= 'created_at desc'
         
         # Configura el filtro predeterminado para la fecha de creación al día actual si no se ha establecido
-        if params[:q][:created_at_gteq].blank? && params[:q][:created_at_lteq].blank?
-          params[:q][:created_at_gteq] = Time.current.beginning_of_day
-          params[:q][:created_at_lteq] = Time.current.end_of_day
+        if params[:q][:created_at_gt].blank?
+          params[:q][:created_at_gt] = Time.current.beginning_of_day
         end
       
         @search = Spree::BookkeepingDocument.ransack(params[:q])
