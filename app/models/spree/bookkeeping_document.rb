@@ -210,12 +210,11 @@ module Spree
           if item.parts.present?
             item.parts.each do |part|
               part_name = part.name
-              part_sku = "#{Spree.t(:sku)}: #{part.sku}"
               bundle_info = Spree.t(:part_of_bundle, sku: item.sku)
               bundle_options = item.options_text.present? ? " (#{item.options_text})" : ""
               bundle_details = "#{bundle_info}"
     
-              row[1] += "\n\n#{part_name} #{part_sku} #{bundle_details}"
+              row[1] += "\n\n#{item.quantity} X #{part_name} #{bundle_details}"
             end
           end
     
@@ -403,12 +402,11 @@ module Spree
           if item.parts.present?
             item.parts.each do |part|
               part_name = part.name
-              part_sku = "#{Spree.t(:sku)}: #{part.sku}"
               bundle_info = Spree.t(:part_of_bundle, sku: item.sku)
               bundle_options = item.options_text.present? ? " (#{item.options_text})" : ""
               bundle_details = "#{bundle_info}"
     
-              row[1] += "\n\n#{part_name} #{bundle_details}"
+              row[1] += "\n\n#{item.quantity} X #{part_name} #{bundle_details}"
             end
           end
     
