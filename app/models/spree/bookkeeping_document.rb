@@ -214,7 +214,7 @@ module Spree
               bundle_options = item.options_text.present? ? " (#{item.options_text})" : ""
               bundle_details = "#{bundle_info}"
     
-              row[1] += "\n\n#{item.quantity} X #{part_name} #{bundle_details}"
+              row[1] += "\n\n#{item.quantity}x #{part_name} #{bundle_details}"
             end
           end
     
@@ -406,7 +406,7 @@ module Spree
               bundle_options = item.options_text.present? ? " (#{item.options_text})" : ""
               bundle_details = "#{bundle_info}"
     
-              row[1] += "\n\n#{item.quantity} X #{part_name} #{bundle_details}"
+              row[1] += "\n\n#{item.quantity}x #{part_name} #{bundle_details}"
             end
           end
     
