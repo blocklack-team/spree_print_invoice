@@ -11,5 +11,3 @@ gemspec
 gem 'prawn_plus'
 
 gem 'prawn-templates'
-
-gem 'combine_pdf'

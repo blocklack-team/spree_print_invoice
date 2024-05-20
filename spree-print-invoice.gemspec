@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'spree_core', '>= 3.1.0', '< 5.0'
   s.add_runtime_dependency 'spree_extension'
 
+  s.add_runtime_dependency 'combine_pdf'
+
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'poltergeist'
   s.add_development_dependency 'factory_bot'
