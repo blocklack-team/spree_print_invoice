@@ -47,33 +47,19 @@ module Spree
       end
 
       def combine_and_print
-        document_urls = params[:document_urls]
+        document_ids = params[:document_ids]
 
-        if document_urls.blank?
-          flash[:error] = 'No se han seleccionado documentos.'
+        if document_ids.blank?
+          flash[:error] = 'No documents have been selected.'
           redirect_back(fallback_location: admin_bookkeeping_documents_path) and return
         end
 
         combined_pdf = CombinePDF.new
 
-        document_urls.each do |url|
-          begin
-            # Abre el archivo y añade su contenido al PDF combinado
-            pdf = CombinePDF.parse(open(url).read)
-            combined_pdf << pdf
-          rescue OpenURI::HTTPError => e
-            Rails.logger.error "Error al abrir la URL #{url}: #{e.message}"
-            flash[:error] = "No se pudo abrir el archivo en la URL #{url}"
-            redirect_back(fallback_location: admin_bookkeeping_documents_path) and return
-          rescue Errno::ENOENT => e
-            Rails.logger.error "Archivo no encontrado en la URL #{url}: #{e.message}"
-            flash[:error] = "Archivo no encontrado en la URL #{url}"
-            redirect_back(fallback_location: admin_bookkeeping_documents_path) and return
-          rescue => e
-            Rails.logger.error "Error desconocido al procesar la URL #{url}: #{e.message}"
-            flash[:error] = "Error desconocido al procesar la URL #{url}"
-            redirect_back(fallback_location: admin_bookkeeping_documents_path) and return
-          end
+        document_ids.each do |id|
+          document = Spree::BookkeepingDocument.find(id)
+          pdf = document.pdf
+          combined_pdf << CombinePDF.parse(pdf)
         end
 
         send_data combined_pdf.to_pdf, filename: 'combined_documents.pdf', type: 'application/pdf', disposition: 'inline'
