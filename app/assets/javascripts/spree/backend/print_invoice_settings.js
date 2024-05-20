@@ -14,15 +14,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }, this);
   });
 
-
   document.getElementById('print-selected-documents').addEventListener('click', function() {
     var selectedCheckboxes = document.querySelectorAll('.document-checkbox:checked');
-    var documentUrls = [];
+    var documentIds = [];
     selectedCheckboxes.forEach(function(checkbox) {
-      documentUrls.push(checkbox.getAttribute('data-url'));
+      documentIds.push(checkbox.getAttribute('data-id'));
     });
 
-    if (documentUrls.length > 0) {
+    if (documentIds.length > 0) {
       var form = document.createElement('form');
       form.method = 'POST';
       form.action = '/admin/bookkeeping_documents/combine_and_print';
@@ -35,18 +34,18 @@ document.addEventListener('DOMContentLoaded', function() {
       tokenInput.value = authenticityToken;
       form.appendChild(tokenInput);
 
-      documentUrls.forEach(function(url) {
-        var urlInput = document.createElement('input');
-        urlInput.type = 'hidden';
-        urlInput.name = 'document_urls[]';
-        urlInput.value = url;
-        form.appendChild(urlInput);
+      documentIds.forEach(function(id) {
+        var idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'document_ids[]';
+        idInput.value = id;
+        form.appendChild(idInput);
       });
 
       document.body.appendChild(form);
       form.submit();
     } else {
-      alert('Please, select one or more documents for print.');
+      alert('Por favor, seleccione al menos un documento para imprimir.');
     }
   });
 });
