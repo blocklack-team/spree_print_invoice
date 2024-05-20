@@ -43,6 +43,19 @@ module Spree
         redirect_to action: 'index'
       end
 
+      def combine_and_print
+        # Recoge las URLs de los documentos seleccionados
+        document_urls = params[:document_urls]
+    
+        combined_pdf = CombinePDF.new
+        document_urls.each do |url|
+          pdf = CombinePDF.parse(open(url).read)
+          combined_pdf << pdf
+        end
+    
+        send_data combined_pdf.to_pdf, filename: 'combined_documents.pdf', type: 'application/pdf', disposition: 'inline'
+      end
+
       private
 
       def order_focused?
