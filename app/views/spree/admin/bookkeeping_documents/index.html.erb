@@ -90,9 +90,11 @@
 <% end %>
 
 <% if @bookkeeping_documents.any? %>
+  <button id="print-selected-documents" class="btn btn-primary">Print selected Documents</button>
   <table class="table table-responsive-lg" id="listing_orders" data-hook>
     <thead>
       <tr data-hook="printables_index_headers">
+        <th><input type="checkbox" id="select-all"></th>
         <th><%= sort_link @search, :created_at, Spree.t(:date, scope: :print_invoice) %></th>
         <th><%= sort_link @search, :template, Spree.t(:document_type, scope: :print_invoice) %></th>
         <th><%= sort_link @search, :number, Spree.t(:order_number, scope: :print_invoice) %></th>
@@ -106,6 +108,7 @@
     <tbody>
     <% @bookkeeping_documents.each do |bookkeeping_document| %>
       <tr data-hook="admin_printables_index_rows" class="<%= cycle('odd', 'even') %>">
+        <td><input type="checkbox" class="document-checkbox" data-url="<%= admin_bookkeeping_document_path(bookkeeping_document, format: :pdf) %>"></td>
         <td><%= l bookkeeping_document.created_at.to_date %></td>
         <td><%= Spree.t(bookkeeping_document.document_type, scope: [:print_invoice]) %></td>
         <td><%= bookkeeping_document.number %></td>
