@@ -7,6 +7,7 @@ $(function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Seleccionar/Deseleccionar todos
   document.getElementById('select-all').addEventListener('change', function() {
     var checkboxes = document.querySelectorAll('.document-checkbox');
     checkboxes.forEach(function(checkbox) {
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, this);
   });
 
+  // Imprimir documentos seleccionados
   document.getElementById('print-selected-documents').addEventListener('click', function() {
     var selectedCheckboxes = document.querySelectorAll('.document-checkbox:checked');
     var documentIds = [];
