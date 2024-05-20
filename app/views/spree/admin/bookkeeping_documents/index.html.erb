@@ -108,7 +108,7 @@
     <tbody>
     <% @bookkeeping_documents.each do |bookkeeping_document| %>
       <tr data-hook="admin_printables_index_rows" class="<%= cycle('odd', 'even') %>">
-        <td><input type="checkbox" class="document-checkbox" data-url="<%= admin_bookkeeping_document_path(bookkeeping_document, format: :pdf) %>"></td>
+        <td><input type="checkbox" class="document-checkbox" data-id="<%= bookkeeping_document.id %>"></td>
         <td><%= l bookkeeping_document.created_at.to_date %></td>
         <td><%= Spree.t(bookkeeping_document.document_type, scope: [:print_invoice]) %></td>
         <td><%= bookkeeping_document.number %></td>
