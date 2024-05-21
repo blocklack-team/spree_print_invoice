@@ -163,6 +163,7 @@ module Spree
 
         #email cell
         if pdf.page_number == 1
+          pdf.move_down 2
           email_cell = pdf.make_cell(content: Spree.t(:email), font_style: :bold)
           email = printable.email
         
