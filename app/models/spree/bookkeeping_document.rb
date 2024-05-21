@@ -170,7 +170,7 @@ module Spree
           # Creamos dos filas de celdas, cada una con una celda para el encabezado y una celda para el correo electrónico
           data = [[email_cell, pdf.make_cell(content: email)]]
           
-          pdf.table(data, position: :center, column_widths: [pdf.bounds.width / 2])
+          pdf.table(data, position: :center, column_widths: [0.5])
         end
       
         # address block on first page only
