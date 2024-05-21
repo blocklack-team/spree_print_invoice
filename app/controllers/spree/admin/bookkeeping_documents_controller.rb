@@ -82,12 +82,12 @@ module Spree
               doc.email,
               doc.created_at.to_date.to_s,
               "#{doc.firstname} #{doc.lastname}",
-              doc.company,
-              doc.street_address_1,
-              doc.city,
-              doc.state_or_province,
-              doc.zip_code,
-              doc.product_count
+              "",
+              doc.ship_address.address1,
+              doc.ship_address.city,
+              doc.ship_address.state.name,
+              doc.ship_address.zipcode,
+              doc.items.count
             ]
           end
         end
