@@ -78,6 +78,17 @@
 
         </div>
 
+        <!-- New shipment state filter -->
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <%= label_tag :q_shipment_state_eq, Spree.t(:shipment_state) %>
+              <%= f.select :shipment_state_eq, options_for_select(Spree::Order::SHIPMENT_STATES.map { |state| [Spree.t(state, scope: :shipment_states), state] }, params.dig(:q, :shipment_state_eq)), { include_blank: Spree.t(:all) }, { class: 'form-control' } %>
+            </div>
+          </div>
+        </div>
+        <!-- End new shipment state filter -->
+
         <div data-hook="admin_orders_index_search_buttons" class="form-actions">
           <%= button Spree.t(:filter_results), 'search' %>
         </div>
