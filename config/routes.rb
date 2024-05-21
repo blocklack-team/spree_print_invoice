@@ -10,6 +10,7 @@ Spree::Core::Engine.add_routes do
     resources :bookkeeping_documents, only: [:index, :show] do
       collection do
         post :combine_and_print
+        post :export_to_excel
       end
     end
   end

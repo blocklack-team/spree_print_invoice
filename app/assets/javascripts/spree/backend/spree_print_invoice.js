@@ -40,8 +40,46 @@ $('body').on('click', '#print-selected-documents', function() {
 		$('body').append(form);
 		form.submit();
 	} else {
-		alert('Por favor, seleccione al menos un documento para imprimir.');
+		alert('Please select at least one document.');
 	}
+});
+
+$('body').on('click', '#download-selected-excel', function() {
+	const selectedDocuments = $('.document-checkbox:checked').map(function() {
+		return $(this).data('id');
+	}).get();
+
+	if (selectedDocuments.length === 0) {
+		alert('Please select at least one document.');
+		return;
+	}
+
+	const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+	$.ajax({
+		url: '/admin/bookkeeping_documents/export_to_excel',
+		method: 'POST',
+		contentType: 'application/json',
+		headers: {
+			'X-CSRF-Token': csrfToken
+		},
+		data: JSON.stringify({ document_ids: selectedDocuments }),
+		success: function(blob) {
+			const url = window.URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'selected_documents.xlsx';
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		},
+		error: function(error) {
+			console.error('Error:', error);
+		},
+		xhrFields: {
+			responseType: 'blob'
+		}
+	});
 });
 
 //= require spree/backend

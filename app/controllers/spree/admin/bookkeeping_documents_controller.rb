@@ -7,6 +7,7 @@ module Spree
 
       require 'open-uri'
       require 'combine_pdf'
+      require 'axlsx'
 
       def show
         respond_with(@bookkeeping_document) do |format|
@@ -63,6 +64,35 @@ module Spree
         end
 
         send_data combined_pdf.to_pdf, filename: 'combined_documents.pdf', type: 'application/pdf', disposition: 'inline'
+      end
+
+      def export_to_excel
+        document_ids = params[:document_ids]
+        documents = BookkeepingDocument.where(id: document_ids)
+    
+        p = Axlsx::Package.new
+        wb = p.workbook
+    
+        wb.add_worksheet(name: "Documents") do |sheet|
+          sheet.add_row ["ORDER ID", "EMAIL", "DATE", "FULL NAME", "COMPANY", "STREET ADDRESS 1", "CITY", "STATE/PROVINCE", "ZIP CODE", "PRODUCT COUNT"]
+    
+          documents.each do |doc|
+            sheet.add_row [
+              doc.number,
+              doc.email,
+              doc.created_at.to_date.to_s,
+              "#{doc.firstname} #{doc.lastname}",
+              doc.company,
+              doc.street_address_1,
+              doc.city,
+              doc.state_or_province,
+              doc.zip_code,
+              doc.product_count
+            ]
+          end
+        end
+    
+        send_data p.to_stream.read, type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename: "selected_documents.xlsx"
       end
 
       private
