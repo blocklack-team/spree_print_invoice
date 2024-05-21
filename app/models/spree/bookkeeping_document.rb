@@ -160,6 +160,16 @@ module Spree
       
       # CONTENT
       pdf.grid([1,0], [6,4]).bounding_box do
+
+        #email cell
+        if pdf.page_number == 1
+          email_cell = pdf.make_cell(content: Spree.t(:email), font_style: :bold)
+          email = printable.email
+
+          data = [email_cell, email]
+          
+          pdf.table(data, position: :center, column_widths: [pdf.bounds.width / 2])
+        end
       
         # address block on first page only
         if pdf.page_number == 1
