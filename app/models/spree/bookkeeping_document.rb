@@ -141,7 +141,6 @@ module Spree
       pdf.font font_style[:face], size: font_style[:size]
       
       pdf.repeat(:all) do
-        #im = (Rails.application.assets || ::Sprockets::Railtie.build_environment(Rails.application)).find_asset(Spree::PrintInvoice::Config[:logo_path])
         logo_path = Rails.root.join('app', 'assets', 'images', Spree::PrintInvoice::Config[:logo_path])
 
         if File.exist?(logo_path)
@@ -160,19 +159,6 @@ module Spree
       
       # CONTENT
       pdf.grid([1,0], [6,4]).bounding_box do
-
-        #email cell
-        if pdf.page_number == 1
-          pdf.move_down 2
-          email_cell = pdf.make_cell(content: Spree.t(:email), font_style: :bold)
-          email = printable.email
-        
-          # Creamos dos filas de celdas, cada una con una celda para el encabezado y una celda para el correo electrónico
-          data = [[email_cell, pdf.make_cell(content: email)]]
-          
-          pdf.table(data, position: :center, column_widths: [pdf.bounds.width])
-        end
-      
         # address block on first page only
         if pdf.page_number == 1
           bill_address = printable.bill_address
@@ -181,6 +167,10 @@ module Spree
           pdf.move_down 2
           address_cell_billing  = pdf.make_cell(content: Spree.t(:billing_address), font_style: :bold)
           address_cell_shipping = pdf.make_cell(content: Spree.t(:shipping_address), font_style: :bold)
+
+          #email cell
+          email_cell = pdf.make_cell(content: Spree.t(:email), font_style: :bold)
+          email = printable.email
           
           billing =  "#{bill_address.firstname} #{bill_address.lastname}"
           billing << "\n#{bill_address.address1}"
@@ -197,9 +187,9 @@ module Spree
           shipping << "\n#{ship_address.phone}"
           shipping << "\n\n#{Spree.t(:via, scope: :print_invoice)} #{printable.shipping_methods.join(", ")}"
           
-          data = [[address_cell_billing, address_cell_shipping], [billing, shipping]]
+          data = [[email_cell, email], [address_cell_billing, address_cell_shipping], [billing, shipping]]
           
-          pdf.table(data, position: :center, column_widths: [pdf.bounds.width / 2, pdf.bounds.width / 2])
+          pdf.table(data, position: :center, column_widths: [pdf.bounds.width / 2, pdf.bounds.width / 2, pdf.bounds.width / 2])
         end
       
         pdf.move_down 10
