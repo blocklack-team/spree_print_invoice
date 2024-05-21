@@ -26,6 +26,10 @@ module Spree
       ["created_at", "email", "firstname", "id", "id_value", "lastname", "number", "printable_id", "printable_type", "template", "total", "updated_at"]
     end
 
+    def self.ransackable_associations(auth_object = nil)
+      ["printable"]
+    end
+
     # An instance of Spree::Printable::#{YourModel}::#{YourTemplate}Presenter
     #
     def view
