@@ -165,8 +165,9 @@ module Spree
         if pdf.page_number == 1
           email_cell = pdf.make_cell(content: Spree.t(:email), font_style: :bold)
           email = printable.email
-
-          data = [email_cell, email]
+        
+          # Creamos dos filas de celdas, cada una con una celda para el encabezado y una celda para el correo electrónico
+          data = [[email_cell, pdf.make_cell(content: email)]]
           
           pdf.table(data, position: :center, column_widths: [pdf.bounds.width / 2])
         end
