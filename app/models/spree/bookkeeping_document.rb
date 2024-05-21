@@ -14,6 +14,7 @@ module Spree
     # +printable+ should be an Object, such as Spree::Order or Spree::Shipment.
     # template should be a string, such as "invoice" or "packaging_slip"
     #
+    belongs_to :order, class_name: 'Spree::Order'
     belongs_to :printable, polymorphic: true
     validates :printable, :template, presence: true
     validates *PERSISTED_ATTRS, presence: true, if: -> { self.persisted? }

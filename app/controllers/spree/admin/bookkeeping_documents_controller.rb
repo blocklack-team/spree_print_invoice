@@ -32,10 +32,20 @@ module Spree
         if params[:q][:template_eq].blank?
           params[:q][:template_eq] = 'invoice'
         end
-      
+
         @search = Spree::BookkeepingDocument.ransack(params[:q])
-        @bookkeeping_documents = @search.result
-        @bookkeeping_documents = @bookkeeping_documents.where(printable: @order) if order_focused?
+
+        # Assuming Spree::BookkeepingDocument belongs_to :order
+        @bookkeeping_documents = @search.result.includes(:order)
+        if order_focused?
+          @bookkeeping_documents = @bookkeeping_documents.where(printable: @order)
+        end
+
+        # Apply shipment_state filter if present
+        if params[:q][:shipment_state_eq].present?
+          @bookkeeping_documents = @bookkeeping_documents.joins(:order).where(spree_orders: { shipment_state: params[:q][:shipment_state_eq] })
+        end
+
         @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(50)
       end
 
