@@ -1,12 +1,12 @@
 $(function() {
   // Seleccionar/Deseleccionar todos
-  $('#select-all').change(function() {
-    $('.document-checkbox').prop('checked', this.checked);
+  $('body').on('change', '#select-all', function() {
+    $('body .document-checkbox').prop('checked', this.checked);
   });
 
   // Imprimir documentos seleccionados
-  $('#print-selected-documents').click(function() {
-    var selectedCheckboxes = $('.document-checkbox:checked');
+  $('body').on('click', '#print-selected-documents', function() {
+    var selectedCheckboxes = $('body .document-checkbox:checked');
     var documentIds = [];
 
     selectedCheckboxes.each(function() {
