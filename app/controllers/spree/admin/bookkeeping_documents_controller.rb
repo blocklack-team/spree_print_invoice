@@ -76,9 +76,10 @@ module Spree
         wb.add_worksheet(name: "Documents") do |sheet|
           sheet.add_row ["ORDER ID", "EMAIL", "DATE", "FULL NAME", "COMPANY", "STREET ADDRESS 1", "CITY", "STATE/PROVINCE", "ZIP CODE", "PRODUCT COUNT"]
 
-          total_items_per_article = 0
     
           documents.each do |doc|
+            total_items_per_article = 0
+            
             doc.items.each do |item|
               total_items_per_article += item.quantity
             end
@@ -89,7 +90,7 @@ module Spree
               doc.created_at.to_date.to_s,
               "#{doc.firstname} #{doc.lastname}",
               "",
-              doc.ship_address.address1,
+              "#{doc.ship_address.address2} #{doc.ship_address.address1}",
               doc.ship_address.city,
               doc.ship_address.state.name,
               doc.ship_address.zipcode,
