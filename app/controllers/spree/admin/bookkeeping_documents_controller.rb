@@ -90,7 +90,7 @@ module Spree
               doc.created_at.to_date.to_s,
               "#{doc.firstname} #{doc.lastname}",
               "",
-              "#{doc.ship_address.address2} #{doc.ship_address.address1}",
+              doc.ship_address.address1,
               doc.ship_address.city,
               doc.ship_address.state.name,
               doc.ship_address.zipcode,
