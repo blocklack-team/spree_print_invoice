@@ -257,22 +257,21 @@ module Spree
         #totals << [pdf.make_cell(content: Spree.t(:order_total)), invoice.display_total.to_s]
         totals << [pdf.make_cell(content: Spree.t(:order_total), size: 16, font_style: :bold), pdf.make_cell(content: invoice.display_total.to_s, size: 16, font_style: :bold)]
 
-
         # Payments
-        #total_payments = 0.0
-        #invoice.payments.completed.each do |payment|
-        #  totals << [
-        #    pdf.make_cell(
-        #      content: Spree.t(:payment_via,
-        #      gateway: (payment.source_type || Spree.t(:unprocessed, scope: :print_invoice)),
-        #      number: payment.number,
-        #      date: I18n.l(payment.updated_at.to_date, format: :long),
-        #      scope: :print_invoice)
-        #    ),
-        #    payment.display_amount.to_s
-        #  ]
-        #  total_payments += payment.amount
-        #end
+        total_payments = 0.0
+        invoice.payments.completed.each do |payment|
+          totals << [
+            pdf.make_cell(
+              content: Spree.t(:payment_via,
+              gateway: (payment.source_type || Spree.t(:unprocessed, scope: :print_invoice)),
+              number: payment.number,
+              date: I18n.l(payment.updated_at.to_date, format: :long),
+              scope: :print_invoice)
+            ),
+            payment.display_amount.to_s
+          ]
+          total_payments += payment.amount
+        end
 
         totals_table_width = [0.875, 0.125].map { |w| w * pdf.bounds.width }
         pdf.table(totals, column_widths: totals_table_width) do
