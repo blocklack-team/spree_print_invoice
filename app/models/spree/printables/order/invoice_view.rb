@@ -7,6 +7,7 @@ module Spree
                    :tax_address,
                    :item_total,
                    :total,
+                   :comment,
                    :payments,
                    :shipments
 

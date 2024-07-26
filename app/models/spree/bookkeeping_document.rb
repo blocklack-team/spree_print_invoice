@@ -273,6 +273,10 @@ module Spree
           total_payments += payment.amount
         end
 
+        if invoice.comment.present?
+          totals << [pdf.make_cell(content: Spree.t(:comment)), invoice.comment.to_s]
+        end
+
         totals_table_width = [0.875, 0.125].map { |w| w * pdf.bounds.width }
         pdf.table(totals, column_widths: totals_table_width) do
           row(0..6).style align: :right
