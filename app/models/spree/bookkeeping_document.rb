@@ -290,7 +290,7 @@ module Spree
 
           totals_table_width = [0.300, 0.700].map { |w| w * pdf.bounds.width }
           pdf.table(comments, column_widths: totals_table_width) do
-            row(0..6).style align: :center
+            row(0..6).style align: :right
             column(0).style borders: [], font_style: :bold
           end
         end
