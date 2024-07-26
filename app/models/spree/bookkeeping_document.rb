@@ -273,10 +273,6 @@ module Spree
           total_payments += payment.amount
         end
 
-        if invoice.comment.present?
-          totals << [pdf.make_cell(content: Spree.t(:comment)), invoice.comment.to_s]
-        end
-
         totals_table_width = [0.875, 0.125].map { |w| w * pdf.bounds.width }
         pdf.table(totals, column_widths: totals_table_width) do
           row(0..6).style align: :right
@@ -286,6 +282,18 @@ module Spree
         pdf.move_down 30
       
         pdf.text Spree::PrintInvoice::Config[:return_message], align: :right, size: font_style[:size]
+
+
+        if invoice.comment.present?
+          comments = []
+          comments << [pdf.make_cell(content: Spree.t(:comment)), invoice.comment.to_s]
+
+          totals_table_width = [0.300, 0.700].map { |w| w * pdf.bounds.width }
+          pdf.table(comments, column_widths: totals_table_width) do
+            row(0..6).style align: :center
+            column(0).style borders: [], font_style: :bold
+          end
+        end
       end
       
       # Footer
