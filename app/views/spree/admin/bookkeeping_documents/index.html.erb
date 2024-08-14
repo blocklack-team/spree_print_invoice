@@ -78,6 +78,16 @@
 
         </div>
 
+        <div class="row">
+          <!-- Nuevo campo de selección para el estado de envío -->
+          <div class="col-md-4">
+            <div class="form-group">
+              <%= label_tag :q_shipment_state_eq, Spree.t(:shipment_state) %>
+              <%= f.select :shipment_state_eq, options_for_select([['Ready', 'ready'], ['Pending', 'pending'], ['Shipped', 'shipped'], ['Canceled', 'canceled']], params[:q][:shipment_state_eq]), { include_blank: true }, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
+
         <div data-hook="admin_orders_index_search_buttons" class="form-actions">
           <%= button Spree.t(:filter_results), 'search' %>
         </div>
