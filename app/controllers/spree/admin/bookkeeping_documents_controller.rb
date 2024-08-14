@@ -34,10 +34,10 @@ module Spree
         end
 
         # Configura el filtro de estado de envío
-        if params[:shipment_state_eq].present?
+        if params[:q][:shipment_state_eq].present?
           @bookkeeping_documents = Spree::BookkeepingDocument.joins("INNER JOIN spree_orders ON spree_orders.id = spree_bookkeeping_documents.printable_id")
                                                             .where(printable_type: 'Spree::Order')
-                                                            .where(spree_orders: { shipment_state: params[:shipment_state_eq] })
+                                                            .where(spree_orders: { shipment_state: params[:q][:shipment_state_eq] })
         end
 
         @search = Spree::BookkeepingDocument.ransack(params[:q])
