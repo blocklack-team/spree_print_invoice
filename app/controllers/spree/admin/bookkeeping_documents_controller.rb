@@ -22,7 +22,7 @@ module Spree
         params[:q] ||= {}
         
         # Configura el orden predeterminado a 'created_at desc' si no se ha establecido
-        params[:q][:s] ||= 'created_at desc'
+        params[:q][:s] ||= 'number asc'
         
         # Configura el filtro predeterminado para la fecha de creación al día actual si no se ha establecido
         if params[:q][:created_at_gt].blank?
