@@ -37,13 +37,13 @@ module Spree
         @bookkeeping_documents = @search.result
 
         # Aplicar filtro manualmente por estado de envío si es un `Spree::Order`
-        if params[:shipment_state_eq].present?
+        if params[:q][:shipment_state_eq].present?
           @bookkeeping_documents = @bookkeeping_documents.select do |doc|
-            doc.printable_type == 'Spree::Order' && doc.printable.shipment_state == params[:shipment_state_eq]
+            doc.printable_type == 'Spree::Order' && doc.printable.shipment_state == params[:q][:shipment_state_eq]
           end
         end
 
-        @bookkeeping_documents = @bookkeeping_documents.where(printable: @order) if order_focused?
+        #@bookkeeping_documents = @bookkeeping_documents.where(printable: @order) if order_focused?
         @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(50)
       end
 
