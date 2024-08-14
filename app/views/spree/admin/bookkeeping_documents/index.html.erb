@@ -83,8 +83,12 @@
           <div class="col-md-4">
             <div class="form-group">
               <%= label_tag :q_shipment_state_eq, Spree.t(:shipment_state) %>
-              <%= select_tag :shipment_state_eq, options_for_select([['Ready', 'ready'], ['Pending', 'pending'], ['Shipped', 'shipped'], ['Canceled', 'canceled']], params[:q][:shipment_state_eq]), { include_blank: true }, class: 'form-control' %>
+              <%= select_tag :shipment_state_eq, 
+                  options_for_select([['Ready', 'ready'], ['Pending', 'pending'], ['Shipped', 'shipped'], ['Canceled', 'canceled']], params[:q][:shipment_state_eq]), 
+                  include_blank: true, 
+                  class: 'form-control' %>
             </div>
+
           </div>
         </div>
 
