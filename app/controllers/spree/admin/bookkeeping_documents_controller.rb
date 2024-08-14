@@ -43,8 +43,10 @@ module Spree
           end
         end
 
-        #@bookkeeping_documents = @bookkeeping_documents.where(printable: @order) if order_focused?
-        @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(50)
+        if @bookkeeping_documents.count > 0
+          @bookkeeping_documents = @bookkeeping_documents.where(printable: @order) if order_focused?
+          @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(50)
+        end
       end
 
       def refresh
