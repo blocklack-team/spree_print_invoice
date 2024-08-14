@@ -35,15 +35,18 @@ module Spree
 
         @search = Spree::BookkeepingDocument.ransack(params[:q])
         @bookkeeping_documents = @search.result
-
+      
         @bookkeeping_documents = @bookkeeping_documents.where(printable: @order) if order_focused?
-        @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(50)
-
-        # Aplicar filtro manualmente por estado de envío si es un `Spree::Order`
+        
+        # Apply manual shipment state filter if provided and if the `printable` is an `Spree::Order`
         if params[:shipment_state_eq].present?
           @bookkeeping_documents = @bookkeeping_documents.select do |doc|
             doc.printable_type == 'Spree::Order' && doc.printable.shipment_state == params[:shipment_state_eq]
           end
+          # Reapply pagination to the array
+          @bookkeeping_documents = Kaminari.paginate_array(@bookkeeping_documents).page(params[:page] || 1).per(50)
+        else
+          @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(50)
         end
       end
 
