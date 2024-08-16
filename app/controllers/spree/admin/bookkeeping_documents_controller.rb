@@ -23,10 +23,13 @@ module Spree
         
         # Configura el orden predeterminado a 'created_at desc' si no se ha establecido
         params[:q][:s] ||= 'number asc'
+
+        params[:shipment_state_eq] ||= 'ready'
         
         # Configura el filtro predeterminado para la fecha de creación al día actual si no se ha establecido
         if params[:q][:created_at_gt].blank?
-          params[:q][:created_at_gt] = Time.current.beginning_of_day
+          params[:q][:created_at_gt] = 5.days.ago.beginning_of_day
+
         end
 
         if params[:q][:template_eq].blank?
