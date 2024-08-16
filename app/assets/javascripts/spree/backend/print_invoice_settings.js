@@ -1,5 +1,9 @@
 $(document).ready(function () {
   // Seleccionar/Deseleccionar todos
+  $(document).on('change', '#select_all', function () {
+    $('body .order-checkbox').prop('checked', this.checked);
+  });
+
   $(document).on('change', '#select-all', function () {
     $('body .document-checkbox').prop('checked', this.checked);
   });
