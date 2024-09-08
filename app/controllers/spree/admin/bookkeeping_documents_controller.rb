@@ -88,13 +88,15 @@ module Spree
         wb = p.workbook
     
         wb.add_worksheet(name: "Documents") do |sheet|
-          sheet.add_row ["ORDER ID", "EMAIL", "DATE", "FULL NAME", "COMPANY", "STREET ADDRESS 1", "CITY", "STATE/PROVINCE", "ZIP CODE", "PRODUCT COUNT"]
+          sheet.add_row ["ORDER ID", "EMAIL", "DATE", "FULL NAME", "COMPANY", "STREET ADDRESS 1", "STREET ADDRESS 2", "CITY", "STATE/PROVINCE", "ZIP CODE", "PRODUCT COUNT", "WEIGHT"]
 
           total_items_per_article = 0
+          product_weight = 0
 
           documents.each do |doc|
             doc.items.each do |item|
               total_items_per_article += item.quantity
+              product_weight = Spree::Variant.find(item.variant_id).weight.to_i * item.quantity
             end
 
             sheet.add_row [
@@ -104,13 +106,16 @@ module Spree
               "#{doc.firstname} #{doc.lastname}",
               "",
               doc.ship_address.address1,
+              doc.ship_address.address2,
               doc.ship_address.city,
               doc.ship_address.state.name,
               doc.ship_address.zipcode,
-              total_items_per_article
+              total_items_per_article,
+              product_weight
             ]
 
             total_items_per_article = 0
+            product_weight = 0
           end
         end
     
