@@ -96,7 +96,7 @@ module Spree
           documents.each do |doc|
             doc.items.each do |item|
               total_items_per_article += item.quantity
-              product_weight += Spree::Variant.find(item.variant_id).weight.to_i * item.quantity
+              product_weight += Spree::Variant.find(item.variant_id).weight.to_f * item.quantity
             end
 
             sheet.add_row [

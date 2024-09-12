@@ -282,12 +282,14 @@ module Spree
         pdf.move_down 30
       
         pdf.text Spree::PrintInvoice::Config[:return_message], align: :right, size: font_style[:size]
-
+        
 
         if invoice.comment.present?
           comments = []
-          comments << [pdf.make_cell(content: Spree.t(:comment)), invoice.comment.to_s]
-
+          comment_text = invoice.comment.to_s.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')
+        
+          comments << [pdf.make_cell(content: Spree.t(:comment)), comment_text]
+        
           totals_table_width = [0.300, 0.700].map { |w| w * pdf.bounds.width }
           pdf.table(comments, column_widths: totals_table_width) do
             row(0..6).style align: :right
