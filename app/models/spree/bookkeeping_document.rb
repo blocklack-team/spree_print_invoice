@@ -282,13 +282,13 @@ module Spree
         pdf.move_down 30
       
         pdf.text Spree::PrintInvoice::Config[:return_message], align: :right, size: font_style[:size]
-        
+
 
         if invoice.comment.present?
           comments = []
           comment_text = invoice.comment.to_s.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')
         
-          comments << [pdf.make_cell(content: Spree.t(:comment)), comment_text]
+          comments << [pdf.make_cell(content: Spree.t(:comment)), remove_emojis(comment_text)]
         
           totals_table_width = [0.300, 0.700].map { |w| w * pdf.bounds.width }
           pdf.table(comments, column_widths: totals_table_width) do
@@ -494,6 +494,12 @@ module Spree
       PERSISTED_ATTRS.each do |attr|
         send("#{attr}=", view.send(attr))
       end
+    end
+
+    def remove_emojis(text)
+      emoji_regex = /[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F700}-\u{1F77F}]|[\u{1F780}-\u{1F7FF}]|[\u{1F800}-\u{1F8FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA00}-\u{1FA6F}]|[\u{1FA70}-\u{1FAFF}]|[\u{1FB00}-\u{1FBFF}]|[\u{1F1E6}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F004}]|[\u{1F0CF}]|[\u{1F18E}]|[\u{1F191}-\u{1F19A}]|[\u{1F232}-\u{1F251}]|[\u{1F300}-\u{1F321}]|[\u{1F324}-\u{1F393}]|[\u{1F396}-\u{1F397}]|[\u{1F399}-\u{1F39B}]|[\u{1F39E}-\u{1F3F0}]|[\u{1F3F3}-\u{1F3F5}]|[\u{1F3F7}]|[\u{1F3F9}-\u{1F3FA}]|[\u{1F3FB}-\u{1F3FF}]|[\u{1F400}-\u{1F43E}]|[\u{1F440}]|[\u{1F442}-\u{1F4FC}]|[\u{1F4FF}-\u{1F53D}]|[\u{1F549}-\u{1F54E}]|[\u{1F550}-\u{1F567}]|[\u{1F57A}]|[\u{1F595}-\u{1F596}]|[\u{1F5A4}]|[\u{1F5FB}-\u{1F64F}]|[\u{1F680}-\u{1F6C5}]|[\u{1F6CB}-\u{1F6D2}]|[\u{1F6E0}-\u{1F6EC}]|[\u{1F6F0}-\u{1F6F3}]|[\u{1F6F4}-\u{1F6F8}]|[\u{1F7E0}-\u{1F7EB}]|[\u{1F90D}-\u{1F93A}]|[\u{1F93C}-\u{1F945}]|[\u{1F947}-\u{1F971}]|[\u{1F973}-\u{1F976}]|[\u{1F97A}]|[\u{1F97C}-\u{1F9A2}]|[\u{1F9A5}-\u{1F9AA}]|[\u{1F9AE}-\u{1F9CA}]|[\u{1F9CD}-\u{1F9FF}]|[\u{1FA70}-\u{1FA73}]|[\u{1FA78}-\u{1FA7A}]|[\u{1FA80}-\u{1FA82}]|[\u{1FA90}-\u{1FA95}]|[\u{1FAB0}-\u{1FAB6}]|[\u{1FAC0}-\u{1FAC2}]|[\u{1FAD0}-\u{1FAD6}]/
+    
+      text.gsub(emoji_regex, '')
     end
 
     # For a Spree::Order printable and an "invoice" template,
