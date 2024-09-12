@@ -250,7 +250,7 @@ module Spree
 
         # Shipments
         invoice.shipments.each do |shipment|
-          if shipment.shipping_method
+          if shipment.shipping_method.present?
             totals << [pdf.make_cell(content: shipment.shipping_method.name), shipment.display_cost.to_s]
           end
         end
