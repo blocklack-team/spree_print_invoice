@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  $('#per_page').html('<option value="300" selected>300</option>');
+  
   // Seleccionar/Deseleccionar todos
   $(document).on('change', '#select_all', function () {
     $('body .order-checkbox').prop('checked', this.checked);

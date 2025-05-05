@@ -47,9 +47,9 @@ module Spree
             doc.printable_type == 'Spree::Order' && doc.printable.shipment_state == params[:shipment_state_eq]
           end
           # Reapply pagination to the array
-          @bookkeeping_documents = Kaminari.paginate_array(@bookkeeping_documents).page(params[:page] || 1).per(50)
+          @bookkeeping_documents = Kaminari.paginate_array(@bookkeeping_documents).page(params[:page] || 1).per(300)
         else
-          @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(50)
+          @bookkeeping_documents = @bookkeeping_documents.page(params[:page] || 1).per(300)
         end
       end
 
